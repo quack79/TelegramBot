@@ -8,22 +8,32 @@ except ImportError:
     import ConfigParser as configparser
 import logging
 import requests
+import os
+import sys
 
 __author__ = 'Kanishk Singh (Arion Miles)'
 __license__ = "MIT"
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 logger = logging.getLogger()
-handler = logging.FileHandler('E:/New/config/notifications.log') #Use absolute paths
+handler = logging.FileHandler(os.path.join(__location__, 'notifications.log'))
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
-# Read settings from creds.ini
-CONFIG = configparser.ConfigParser()
-CONFIG.read("E:/New/config/creds.ini")
-API_KEY_TOKEN = CONFIG.get('CREDS', 'API_TOKEN')
-CHAT_ID = CONFIG.get('CREDS', 'CHAT_ID')
+# Settings
+check_creds = os.path.isfile(os.path.join(__location__, 'creds.ini'))
+if check_creds:
+    CONFIG = configparser.ConfigParser()
+    CONFIG.read(os.path.join(__location__, 'creds.ini'))
+    API_KEY_TOKEN = CONFIG.get('CREDS', 'API_TOKEN')
+    CHAT_ID = CONFIG.get('CREDS', 'CHAT_ID')
+else:
+    print("Error: creds.ini not found")        
+    sys.exit()
 
 PARSER = argparse.ArgumentParser(description="Filebot report tool.")
 PARSER.add_argument('-title', '-t', type=str, help="Message title", required=False)
