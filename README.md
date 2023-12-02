@@ -55,6 +55,23 @@ Similarly, set `HKEY_CLASSES_ROOT\py_auto_file\shell\open\command` to the same v
 
 Read more about this [here.](http://eli.thegreenplace.net/2010/12/14/problem-passing-arguments-to-python-scripts-on-windows/)
 
+# Compiling on Windows
+
+This is how I did it...
+
+First install Python 3.11.x
+Then from a command prompt: 
+
+`python.exe -m pip install --upgrade pip`
+`python -m pip install -U nuitka`
+`python -m pip install requests`
+`python -m nuitka --standalone telegram.py --no-deployment-flag=self-execution`
+
+And add 
+`telegram.exe -t "%N" -m "%N has finished downloading."`
+to your Torrent program
+
+
 # License
 MIT License
 
