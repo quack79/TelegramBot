@@ -63,8 +63,11 @@ First install Python 3.11.x
 Then from a command prompt: 
 
 `python.exe -m pip install --upgrade pip`
+
 `python -m pip install -U nuitka`
+
 `python -m pip install requests`
+
 `python -m nuitka --standalone telegram.py --no-deployment-flag=self-execution`
 
 And add 
