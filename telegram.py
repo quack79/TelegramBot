@@ -32,7 +32,6 @@ logger.setLevel(logging.DEBUG)
 
 # Get Settings
 check_creds = os.path.isfile(resolve_path("creds.ini"))
-print(resolve_path("creds.ini"))
 if check_creds:
     CONFIG = configparser.ConfigParser()
     CONFIG.read(resolve_path("creds.ini"))
