@@ -29,8 +29,6 @@ Install Python 3.11 (3.12 not currently supported)
 
 `python -m pip install requests`
 
-`python -m nuitka --standalone telegram.py --no-deployment-flag=self-execution`
-
-`python -m nuitka --standalone --no-deployment-flag=self-execution --onefile --plugin-enable=upx --upx-binary="UPXLOCATION" --windows-icon-from-ico=telegram.ico telegram.py`
+`python -m nuitka --no-deployment-flag=self-execution --onefile --plugin-enable=upx --upx-binary="UPXLOCATION" --windows-icon-from-ico=telegram.ico telegram.py`
 
 Finally add  `FULLPATH\telegram.exe -t "%N" -m "%N has finished downloading."`  to your favourite torrent software
