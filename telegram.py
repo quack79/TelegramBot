@@ -14,30 +14,37 @@ import sys
 __author__ = 'Kanishk Singh (Arion Miles)'
 __license__ = "MIT"
 
-__location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+# Get the path - checking to see if we're compiled or not
+def resolve_path(path):
+    if getattr(sys, "frozen", False):
+        resolved_path = os.path.abspath(os.path.join(sys._MEIPASS, path))
+    else:
+        resolved_path = os.path.abspath(os.path.join(os.getcwd(), path))
+    return resolved_path
 
+# Set up Logging
 logger = logging.getLogger()
-handler = logging.FileHandler(os.path.join(__location__, 'notifications.log'))
+handler = logging.FileHandler(resolve_path("notifications.log"))
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
-# Settings
-check_creds = os.path.isfile(os.path.join(__location__, 'creds.ini'))
+# Get Settings
+check_creds = os.path.isfile(resolve_path("creds.ini"))
+print(resolve_path("creds.ini"))
 if check_creds:
     CONFIG = configparser.ConfigParser()
-    CONFIG.read(os.path.join(__location__, 'creds.ini'))
+    CONFIG.read(resolve_path("creds.ini"))
     API_KEY_TOKEN = CONFIG.get('CREDS', 'API_TOKEN')
     CHAT_ID = CONFIG.get('CREDS', 'CHAT_ID')
 else:
     print("Error: creds.ini not found")        
     sys.exit()
 
-PARSER = argparse.ArgumentParser(description="Filebot report tool.")
-PARSER.add_argument('-title', '-t', type=str, help="Message title", required=False)
-PARSER.add_argument('-message', '-m', type=str, help="Message content", required=False, default="")
+PARSER = argparse.ArgumentParser(description="TelegramBot")
+PARSER.add_argument('-title', '-t', type=str, help="Title", required=False)
+PARSER.add_argument('-message', '-m', type=str, help="Message Content", required=False, default="")
 ARGS = PARSER.parse_args()
 
 def telegram(message_title, message_content):
