@@ -18,12 +18,10 @@ We're using a Telegram bot for sending messages. [Start here](https://core.teleg
 
 ----
 
-# Compiling on Windows
-
-### This is how I did it using Nuitka
+# Compiling on Windows using Nuitka
 
 Download [UPX](https://github.com/upx/upx/releases/latest) and unzip
-Then install Python 3.11 (not 3.12!)
+Install Python 3.11 (3.12 not currently supported)
 
 `python.exe -m pip install --upgrade pip`
 
@@ -35,17 +33,4 @@ Then install Python 3.11 (not 3.12!)
 
 `python -m nuitka --standalone --no-deployment-flag=self-execution --onefile --plugin-enable=upx --upx-binary="UPXLOCATION" --windows-icon-from-ico=telegram.ico telegram.py`
 
-
-### Or use pyInstaller 
-
-Download [UPX](https://github.com/upx/upx/releases/latest) and unzip
-
-`pip install pyinstaller`
-
-`pyinstaller --onefile --noconfirm --noconsole --clean --log-level=WARN --upx-dir="UPXLOCATION" --strip --icon=telegram.ico telegram.py`
-
-
-Finally add 
-`FULLPATH\telegram.exe -t "%N" -m "%N has finished downloading."`
-to your Torrent program
-
+Finally add  `FULLPATH\telegram.exe -t "%N" -m "%N has finished downloading."`  to your favourite torrent software
