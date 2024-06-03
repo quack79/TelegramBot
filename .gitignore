@@ -1,4 +1,7 @@
-creds\.ini
+creds.ini
 .vscode/settings.json
 telegram.build
 telegram.dist
+telegram.onefile-build
+telegram.exe
+notifications.log

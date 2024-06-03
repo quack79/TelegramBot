@@ -2,10 +2,7 @@
 '''Import requirements'''
 import argparse
 import json
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 import logging
 import requests
 import os
@@ -22,15 +19,13 @@ def resolve_path(path):
     else:
         # When running from the command line, get the path of the current script's directory
         resolved_path = os.path.abspath(os.path.dirname(sys.argv[0]))
-        if not os.path.isfile(resolved_path + "/" + path):
-            # If the file is not found in the current directory, try the parent directory
-            resolved_path = os.path.abspath(os.path.dirname(sys.argv[0])) + "/../"
-            if not os.path.isfile(resolved_path + "/" + path):
-                # If the file is still not found, raise an error
-                raise FileNotFoundError(f"File '{path}' not found in the current directory or its parent directory.")
+    resolved_path = resolved_path + "/" + path
     return resolved_path
 
 # Set up Logging
+if not os.path.exists(resolve_path("notifications.log")):
+    # If the file does not exist, create it
+    open(resolve_path("notifications.log"), 'a').close()
 logger = logging.getLogger()
 handler = logging.FileHandler(resolve_path("notifications.log"))
 formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
@@ -39,8 +34,7 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 # Get Settings
-check_creds = resolve_path("creds.ini")
-if not check_creds:
+if not os.path.exists(resolve_path("creds.ini")):
     # If creds.ini doesn't exist, create it in the same directory as the script
     CONFIG = configparser.ConfigParser()
     CONFIG.add_section('CREDS')
@@ -50,17 +44,18 @@ if not check_creds:
         CONFIG.write(file)
     print("Error: You need to update creds.ini with your credentials")        
     sys.exit()
-
 CONFIG = configparser.ConfigParser()
 CONFIG.read(resolve_path("creds.ini"))
 API_KEY_TOKEN = CONFIG.get('CREDS', 'API_TOKEN')
 CHAT_ID = CONFIG.get('CREDS', 'CHAT_ID')
 
+# Get Command Line Arguments
 PARSER = argparse.ArgumentParser(description="TelegramBot")
 PARSER.add_argument('-title', '-t', type=str, help="Title", required=False)
 PARSER.add_argument('-message', '-m', type=str, help="Message Content", required=False, default="")
 ARGS = PARSER.parse_args()
 
+# Submit message to Telegram via Bot
 def telegram(message_title, message_content):
     '''Submit message to Telegram via Bot'''
     CONTENT = message_title + '\n' + message_content
