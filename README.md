@@ -18,17 +18,21 @@ We're using a Telegram bot for sending messages. [Start here](https://core.teleg
 
 ----
 
-# Compiling on Windows using Nuitka
+# Compiling using Nuitka
+
+Install Python 3.12
+
+`python3 -m pip install --upgrade pip`
+
+`python3 -m pip install -U nuitka`
+
+`python3 -m pip install -r requirements.txt`
+
+`python3 -m pip install imageio` # MacOS only
 
 Download [UPX](https://github.com/upx/upx/releases/latest) and unzip
-Install Python 3.11 (3.12 not currently supported)
+Or if on MacOS `brew install upx`
 
-`python.exe -m pip install --upgrade pip`
-
-`python -m pip install -U nuitka`
-
-`python -m pip install requests`
-
-`python -m nuitka --no-deployment-flag=self-execution --onefile --plugin-enable=upx --upx-binary="UPXLOCATION" --windows-icon-from-ico=telegram.ico telegram.py`
+`python3 -m nuitka --no-deployment-flag=self-execution --onefile --plugin-enable=upx --upx-binary="UPXLOCATION" --windows-icon-from-ico=telegram.ico telegram.py`
 
 Finally add  `FULLPATH\telegram.exe -t "%N" -m "%N has finished downloading."`  to your favourite torrent software

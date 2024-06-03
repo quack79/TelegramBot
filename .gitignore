@@ -1,1 +1,4 @@
 creds\.ini
+.vscode/settings.json
+telegram.build
+telegram.dist
